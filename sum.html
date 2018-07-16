@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src="aro.js"></script>
+	</head>
+	<body>
+		<p>Value of A:</p>
+		<input id="val_a" type="text"></input><br/>
+		<p>Value of B:</p>
+		<input id="val_b" type="text"></input><br/><br/>
+		<button id="btn_sum">Add</button><br/>
+		<p id="ans"></p>
+		
+		<script>
+			var aro_inp = new AroForm({ inp_a : "val_a", inp_b : "val_b" });
+			var aro_btn = new Aro("btn_sum");
+			var aro_ans = new Aro("ans");
+			
+			aro_btn.bindEventWithTargSrc(function(input, output) {
+				output.setText(parseInt(input.inp_a) + parseInt(input.inp_b));
+			}, aro_inp, aro_ans, 'click');
+			
+		</script>
+	</body>
+</html>
