@@ -56,3 +56,18 @@ aro_btn.bindEventWithTargSrc(function(input, output) {
     output.setText(parseInt(input.inp_a) + parseInt(input.inp_b));
 }, aro_inp, aro_sum, 'click');
 ```
+
+### Simple and Powerful Templating system
+Aro has Its own templating system to use with the Javascript. Create segments/component samples and later use them to dynamically create components by assembling them.
+```HTML
+<ul id="list_main"></ul>
+<!-- template for the item (not displayed) -->
+<li id="list_item" display="none">$name$ is $age$</li>
+```
+```javascript
+let aro_item = new Aro("list_item");
+let aro_list = new Aro("list_main");
+/*The template for the list item is replicated to generate the list 
+using data passed as first parameter*/
+aro_list.append([{name:'ABC', age:12},{name:'DEF', age:15}], aro_item);
+```
