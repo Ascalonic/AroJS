@@ -1,8 +1,25 @@
+display_possible = ['block', 'compact', 'flex', 'inline', 'inline-block', 'inline-flex',
+			'inline-table', 'list-item', 'marker', 'none', 'run-in', 'table',
+			'table-caption', 'table-cell', 'table-column', 'table-column-group',
+			'table-footer-group', 'table-header-group', 'table-row', 'table-row-group',
+			'initial', 'inherit'];
+
+position_possible = ['static', 'absolute', 'fixed', 'relative', 'sticky', 'initial',
+			'inherit'];
+
+
 class Aro {
 
 	constructor(elem) {
 		this.elem = elem;
 		console.log("Element by id " + elem);
+
+		var e = document.getElementById(this.elem);
+
+		var att = e.attributes;
+		for(var i=0; i<att.length; i++) {
+			this.setCustomProps(e, att[i].nodeValue, att[i].nodeName);
+		}
 	}
 
 	//Set innerHTML of a DOM element
@@ -33,7 +50,7 @@ class Aro {
 	}
 
 	//Bind an onclick event with a 'target' and 'input' objects
-	bindEventWithTargSrc(ev, inp, targ, ev_name) {
+	bindEventWithTargSrc(ev, inp, targ, event_name) {
 		var e = document.getElementById(this.elem);
 
 		inp.inp_pairs.owner = this;
@@ -45,7 +62,7 @@ class Aro {
 			ev(inp.inp_pairs, inp.inp_pairs.target);
 		}
 
-		e.addEventListener('click', inp.inp_pairs, false);
+		e.addEventListener(event_name, inp.inp_pairs, false);
 	}
 
 	//Set visibility of the element (true : visible)
@@ -70,6 +87,68 @@ class Aro {
 		else {
 			e.style.display = "block";
 		}
+	}
+
+	//If any custom properties are assigned to the element, set them
+	setCustomProps(e, value, prop_name) {
+		if(prop_name == 'opacity')
+		{
+			if(value >= 0.0 && value <= 1.0)
+				e.style.opacity = value;
+			else
+				throw "Opacity Must be between 0.0 and 1.0 for " + this.elem;
+		}
+		else if(prop_name == 'display')
+		{
+			if(display_possible.indexOf(value) != -1)
+				e.style.display = value;
+			else
+				throw "Invalid display property for " + this.elem;
+		}
+		else if(prop_name == 'x')
+		{
+			e.style.left = value;
+		}
+		else if(prop_name == 'y')
+		{
+			e.style.top = value;
+		}
+		else if(prop_name == 'left')
+		{
+			e.style.left = value;
+		}
+		else if(prop_name == 'top')
+		{
+			e.style.top = value;
+		}
+		else if(prop_name == 'bottom')
+		{
+			e.style.bottom = value;
+		}
+		else if(prop_name == 'right')
+		{
+			e.style.right = value;
+		}
+		else if(prop_name == 'position')
+		{
+			if(position_possible.indexOf(value) != -1)
+				e.style.position = value;
+			else
+				throw "Invalid position property for " + this.elem;
+		}
+		else if(prop_name == 'color')
+		{
+			e.style.color = value;
+		}
+	}
+
+	//Set value of a custom/legacy attribute
+	setProp(value, prop_name) {
+		var e = document.getElementById(this.elem);
+		e.setAttribute(prop_name, value);
+
+		//If its a custom prop, take the corresponding action
+		this.setCustomProps(e, value, prop_name);
 	}	
 }
 
