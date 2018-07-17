@@ -63,7 +63,7 @@ Aro has Its own templating system to use with the Javascript. Create segments/co
 ```HTML
 <ul id="list_main"></ul>
 <!-- template for the item (not displayed) -->
-<li id="list_item" display="none">$name$ is $age$</li>
+<li hidden id="list_item">$name$ is $age$</li>
 ```
 ```javascript
 let aro_item = new Aro("list_item");
