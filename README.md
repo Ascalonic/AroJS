@@ -24,7 +24,7 @@ aro_para.setProp("20px", "top");
 Aro also provide instant validation of these properties
 ```HTML
 <!-- Opacity specified as a custom attribute -->
-<p id="para" opacity="0.5">Hello</p>
+<p id="para" opacity="1.5">Hello</p>
 ```
 
 will throw the exception:
