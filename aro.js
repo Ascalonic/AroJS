@@ -149,7 +149,31 @@ class Aro {
 
 		//If its a custom prop, take the corresponding action
 		this.setCustomProps(e, value, prop_name);
-	}	
+	}
+	
+	//return the clone of the corresponding DOM element
+	getClonedDOM() {
+		var e = document.getElementById(this.elem);
+		return(e.cloneNode(true));
+	}
+
+	//Append children to the element based on the passed array of objects
+	append(values, child) {
+		var e = document.getElementById(this.elem);
+
+		for(var i = 0; i<values.length; i++) {
+			var child_clone = child.getClonedDOM();
+			child_clone.id = this.elem + "_child" + i;
+			child_clone.style.display = "list-item";
+
+			Object.keys(values[i]).forEach(function(key) {
+				var phvalue = child_clone.innerHTML;
+				child_clone.innerHTML = phvalue.replace("$" + key + "$", values[i][key]);
+			});	
+
+			e.appendChild(child_clone);
+		}
+	}
 }
 
 
