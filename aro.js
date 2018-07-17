@@ -13,6 +13,7 @@ class Aro {
 	constructor(elem) {
 		this.elem = elem;
 		console.log("Element by id " + elem);
+		this.ch_count = 0;
 
 		var e = document.getElementById(this.elem);
 
@@ -28,25 +29,25 @@ class Aro {
 		e.innerHTML = text;
 	}
 
-	//Bind an onclick event to the element
-	bindClick(ev) {
+	//Bind an event to the element
+	bindEvent(ev, ev_name) {
 		var e = document.getElementById(this.elem);
 		var obj = {
 			owner : this,
 			handleEvent : ev
 		}
-		e.addEventListener('click', obj, false);
+		e.addEventListener(ev_name, obj, false);
 	}
 
 	//Bind an onclick event with a 'target' object
-	bindClickWithTarg(ev, targ) {
+	bindEventWithTarg(ev, targ, ev_name) {
 		var e = document.getElementById(this.elem);
 		var obj = {
 			owner : this,
 			target : targ,
 			handleEvent : ev
 		}
-		e.addEventListener('click', obj, false);
+		e.addEventListener(ev_name, obj, false);
 	}
 
 	//Bind an onclick event with a 'target' and 'input' objects
@@ -150,7 +151,12 @@ class Aro {
 		//If its a custom prop, take the corresponding action
 		this.setCustomProps(e, value, prop_name);
 	}
-	
+
+	getProp(prop_name) {
+		var e = document.getElementById(this.elem);
+		return(e.getAttribute(prop_name));
+	}
+
 	//return the clone of the corresponding DOM element
 	getClonedDOM() {
 		var e = document.getElementById(this.elem);
@@ -159,21 +165,35 @@ class Aro {
 
 	//Append children to the element based on the passed array of objects
 	append(values, child) {
+
 		var e = document.getElementById(this.elem);
 
 		for(var i = 0; i<values.length; i++) {
 			var child_clone = child.getClonedDOM();
-			child_clone.id = this.elem + "_child" + i;
+			child_clone.id = this.elem + "_child" + this.ch_count;
+			this.ch_count++;
 			child_clone.style.display = "list-item";
+			e.appendChild(child_clone);
+
+			var child_clone_aro = new Aro(child_clone.id);
+			child_clone_aro.setVisible(true);
 
 			Object.keys(values[i]).forEach(function(key) {
 				var phvalue = child_clone.innerHTML;
 				child_clone.innerHTML = phvalue.replace("$" + key + "$", values[i][key]);
+				
+				if(key == 'onclick')
+				{
+					child_clone_aro.bindEvent(values[i][key], 'click');
+				}
+				else
+				{
+					child_clone_aro.setProp(values[i][key], key);
+				}
+				
 			});	
-
-			e.appendChild(child_clone);
 		}
-	}
+	}	
 }
 
 
