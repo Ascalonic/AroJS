@@ -33,6 +33,7 @@ Opacity Must be between 0.0 and 1.0 for para
 ```
 
 ### Easy and dynamic form Handling even without using HTML forms
+To make complex form handling easier and to increase flexibility, Aro uses dynamic placeholder system. The placeholder name for a field is associated with its ID. The field value can be accessed using placeholder names present in the input object. The output object is the target for the event.
 ```HTML
 <p>Value of A:</p>
 <input type="text" id="val_a"></input><br/>
