@@ -72,3 +72,13 @@ let aro_list = new Aro("list_main");
 using data passed as first parameter*/
 aro_list.append([{name:'ABC', age:12},{name:'DEF', age:15}], aro_item);
 ```
+Events can be bound to these components easily:
+```javascript
+aro_list.append([{
+    name:'ABC', 
+    age:12,
+    onclick:function(){
+        alert(this.owner.getProp('age'));
+    }
+]}, aro_item);
+```
