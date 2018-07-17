@@ -141,6 +141,9 @@ class Aro {
 		{
 			e.style.color = value;
 		}
+		else if(typeof this.def_template !== 'undefined'){
+			e.innerHTML = e.innerHTML.replace("$" + prop_name + "$", value);
+		}
 	}
 
 	//Set value of a custom/legacy attribute
@@ -148,8 +151,11 @@ class Aro {
 		var e = document.getElementById(this.elem);
 		e.setAttribute(prop_name, value);
 
-		//If its a custom prop, take the corresponding action
-		this.setCustomProps(e, value, prop_name);
+		e.innerHTML = this.def_template;
+		var att = e.attributes;
+		for(var i=0; i<att.length; i++) {
+			this.setCustomProps(e, att[i].nodeValue, att[i].nodeName);
+		}
 	}
 
 	getProp(prop_name) {
@@ -176,9 +182,13 @@ class Aro {
 			e.appendChild(child_clone);
 
 			var child_clone_aro = new Aro(child_clone.id);
-			child_clone_aro.setVisible(true);
+			
+			//store the template for future updates
+			child_clone_aro.def_template = child_clone.innerHTML;
 
 			Object.keys(values[i]).forEach(function(key) {
+				console.log('replacing ' + key);
+
 				var phvalue = child_clone.innerHTML;
 				child_clone.innerHTML = phvalue.replace("$" + key + "$", values[i][key]);
 				
