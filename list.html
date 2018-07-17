@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Test</title>
+		<script src="ascalon.js"></script>
+	</head>
+	<body>
+
+		<ul id="list_main"></ul>
+		<li id="list_item" display="none">$name$ is $age$</li>
+
+		<br/>
+		Enter Name:<input type = "text" id = "txtName"></input><br/><br/>
+		Enter Age:<input type = "text" id = "txtAge"></input><br/><br/>
+		<button id = "btnAdd">Add to List</button>
+
+		<script>
+
+			let aro_item = new Aro("list_item");
+			let aro_list = new Aro("list_main");
+			let aro_btn = new Aro("btnAdd");
+			let aro_form = new AroForm({val_name:'txtName', val_age:'txtAge'});
+
+			aro_btn.bindEventWithTargSrc(function(input, output) {
+				output.append([{name: input.val_name, age:input.val_age}], aro_item);
+			}, aro_form, aro_list, 'click');
+
+		</script>
+
+	</body>
+</html>
