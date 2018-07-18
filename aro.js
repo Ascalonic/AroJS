@@ -14,8 +14,10 @@ class Aro {
 		this.elem = elem;
 		console.log("Element by id " + elem);
 		this.ch_count = 0;
+		this.linked_objs = new Object();
 
 		var e = document.getElementById(this.elem);
+		
 
 		var att = e.attributes;
 		for(var i=0; i<att.length; i++) {
@@ -27,6 +29,12 @@ class Aro {
 	setText(text) {
 		var e = document.getElementById(this.elem);
 		e.innerHTML = text;
+	}
+
+	//Set value of a DOM element
+	setValue(text) {
+		var e = document.getElementById(this.elem);
+		e.value = text;
 	}
 
 	//Bind an event to the element
@@ -64,6 +72,29 @@ class Aro {
 		}
 
 		e.addEventListener(event_name, inp.inp_pairs, false);
+	}
+
+	//Bind an onclick event with a 'target' and 'input' objects
+	bindEventWithObj(ev, targ_obj, ev_name) {
+
+		var e = document.getElementById(this.elem);
+		var obj = {
+			owner : this,
+			handleEvent : ev
+		}
+
+		var _this = this;
+		Object.keys(targ_obj).forEach(function(key) {
+			obj[key] = targ_obj[key];
+		});
+		
+		e.addEventListener(ev_name, obj, false);
+	}
+
+	unbindEvents() {
+		var e = document.getElementById(this.elem);
+		var new_element = e.cloneNode(true);
+		e.parentNode.replaceChild(new_element, e);
 	}
 
 	//Set visibility of the element (true : visible)
@@ -158,6 +189,11 @@ class Aro {
 		}
 	}
 
+	getValue() {
+		var e = document.getElementById(this.elem);
+		return(e.value);
+	}
+
 	getProp(prop_name) {
 		var e = document.getElementById(this.elem);
 		return(e.getAttribute(prop_name));
@@ -194,7 +230,12 @@ class Aro {
 				
 				if(key == 'onclick')
 				{
-					child_clone_aro.bindEvent(values[i][key], 'click');
+					child_clone_aro.bindEventWithObj(values[i][key], 
+						child_clone_aro.linked_objs, 'click');
+				}
+				else if(key.startsWith("$"))
+				{
+					child_clone_aro.linked_objs[key] = values[i][key];
 				}
 				else
 				{
