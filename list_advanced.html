@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<title>Test</title>
+		<script src="ascalon.js"></script>
+	</head>
+	<body>
+
+		<ul id="list_main"></ul>
+		<li hidden id="list_item">$c_name$ is $age$</li>
+
+		<br/>
+		Enter Name:<input type = "text" id = "txtName"></input><br/><br/>
+		Enter Age:<input type = "text" id = "txtAge"></input><br/><br/>
+		<button id = "btnAdd">Add to List</button>
+		<button id = "btnUpdate">Update</button>
+
+		<script>
+
+			let aro_item = new Aro("list_item");
+			let aro_list = new Aro("list_main");
+			let aro_btn = new Aro("btnAdd");
+			let aro_txt_name = new Aro("txtName");
+			let aro_txt_age = new Aro("txtAge");
+			let aro_form = new AroForm({val_name:'txtName', val_age:'txtAge'});
+			let update_btn = new Aro("btnUpdate");
+
+			aro_btn.bindEventWithTargSrc(function(input, output) {
+				output.targ_list.append([{c_name: input.val_name, 
+						age:input.val_age,
+						$edtname:aro_txt_name,
+						$edtage:aro_txt_age,
+						$edit_btn: output.btn_edit,
+						onclick:function() {
+							this.$edtname.setValue(this.owner.getProp('c_name'));
+							this.$edtage.setValue(this.owner.getProp('age'));
+							this.$edit_btn.unbindEvents();
+							this.$edit_btn.bindEventWithTargSrc(function(input, output) {
+								output.setProp(input.val_name, 'c_name');
+								output.setProp(input.val_age, 'age');
+							}, output.frmEdit, this.owner, 'click');
+						}
+					}], aro_item);
+				
+				output.txName.setValue('');
+				output.txAge.setValue('');
+			}, aro_form, 
+			{
+				targ_list: aro_list,
+				txName: aro_txt_name,
+				txAge: aro_txt_age,
+				btn_edit: update_btn,
+				frmEdit: aro_form
+			},
+			'click');
+
+		</script>
+
+	</body>
+</html>
