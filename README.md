@@ -82,3 +82,5 @@ aro_list.append([{
     }
 ]}, aro_item);
 ```
+ECMAScript allows you to pass data as object into dynamically bound events. Aro provides you with an advanced and Object Oriented version of this feature. For the dynamic elements created, you can pass all the event handlers and the objects at once and Aro does the rest. 
+
